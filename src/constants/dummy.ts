@@ -1,7 +1,9 @@
-const count = 3;
+const COUNT = 3;
 
-const localStorageKeys = {
-  url_list: "url_list",
+const LOCAL_STORAGE_KEY = {
+  URL_LIST: "url_list",
 };
 
-export { count, localStorageKeys };
+const URL_MAX_LENGTH = 50;
+
+export { COUNT, LOCAL_STORAGE_KEY, URL_MAX_LENGTH };

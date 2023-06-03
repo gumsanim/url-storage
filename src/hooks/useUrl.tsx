@@ -1,13 +1,21 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Layout from "../layouts/Layout";
+import React, { useEffect, useState } from "react";
 import localStorage from "../utils/localStorage";
 import uuid from "react-uuid";
-import { localStorageKeys } from "../constants/dummy";
-import { IUrlItem } from "../@types/data.types";
+import { LOCAL_STORAGE_KEY } from "../constants/dummy";
+import { UrlItem } from "../@types/data.types";
+import { regexValidator } from "../utils/regexValidator";
+import { REGEX } from "../constants/regex";
+import { MESSAGES } from "../constants/messages";
+import { URL_MAX_LENGTH } from "../constants/dummy";
 
 const useUrl = () => {
-  const [urlList, setUrlList] = useState<Array<IUrlItem>>([]);
+  const [urlList, setUrlList] = useState<Array<UrlItem>>([]);
   const [urlSearchInput, setUrlSearchInput] = useState("");
+  const [urlError, setUrlError] = useState({
+    hasError: true,
+    errorMessage: "",
+  });
+  /* URL 저장 시 고유 string ID 생성 */
   const uniqueId = uuid();
 
   const urlSearchInputHandler = (
@@ -16,8 +24,9 @@ const useUrl = () => {
     setUrlSearchInput(event.target.value);
   };
 
+  /* local storage의 값, 매 렌더링 시 할당, 전역변수용 */
   const urlFromLocalStorage = localStorage.getData(
-    localStorageKeys.url_list
+    LOCAL_STORAGE_KEY.URL_LIST
   ) as string;
 
   const addUrlHandler = () => {
@@ -26,14 +35,32 @@ const useUrl = () => {
       기존 데이터에 새로운 url 정보를 삽입 후 url list state 업데이트
     */
     if (urlFromLocalStorage) {
-      const addedUrlList = JSON.parse(urlFromLocalStorage).concat({
+      /* local storage의 데이터에 같은 URL 이름이 등록 되어 있다면 중복 방지 처리*/
+      const parsedUrlFromLocalStorage = JSON.parse(urlFromLocalStorage);
+      if (
+        parsedUrlFromLocalStorage.findIndex(
+          (urlItem: UrlItem) => urlItem.url === urlSearchInput
+        ) >= 0
+      ) {
+        return alert(MESSAGES.DUPLICATE_URL);
+      }
+
+      /* URL 데이터가 최대 저장 가능 갯수(5) 초과 방지 */
+      if (parsedUrlFromLocalStorage.length >= URL_MAX_LENGTH) {
+        return alert(MESSAGES.URL_LENGTH_EXCEEDED);
+      }
+
+      /* 위의 모든 제약 조건들을 통과 했다면 */
+      const addedUrlList = parsedUrlFromLocalStorage.concat({
         id: uniqueId,
         url: urlSearchInput,
       });
+
       localStorage.setData(
-        localStorageKeys.url_list,
+        LOCAL_STORAGE_KEY.URL_LIST,
         JSON.stringify(addedUrlList)
       );
+      /* url 입력값 초기화 */
       setUrlSearchInput("");
       return setUrlList(addedUrlList);
     }
@@ -42,7 +69,7 @@ const useUrl = () => {
       url_list라는 이름으로 local storage에 첫 데이터 삽입 후 url list state 업데이트
     */
     localStorage.setData(
-      localStorageKeys.url_list,
+      LOCAL_STORAGE_KEY.URL_LIST,
       JSON.stringify([
         {
           id: uniqueId,
@@ -50,8 +77,10 @@ const useUrl = () => {
         },
       ])
     );
+    /* url 입력값 초기화 */
     setUrlSearchInput("");
-    return setUrlList((prevUrlList: Array<IUrlItem>) => [
+
+    return setUrlList((prevUrlList: Array<UrlItem>) => [
       ...prevUrlList,
       {
         id: uniqueId,
@@ -61,29 +90,49 @@ const useUrl = () => {
   };
 
   const removeUrlHandler = (url_id: string) => {
-    setUrlList(urlList.filter((urlItem: IUrlItem) => urlItem.id !== url_id));
+    setUrlList(urlList.filter((urlItem: UrlItem) => urlItem.id !== url_id));
 
     /* 만약 local storage에 저장된 url이 하나 라면, 전부 삭제 */
     if (JSON.parse(urlFromLocalStorage).length === 1) {
-      return localStorage.removeData(localStorageKeys.url_list);
+      return localStorage.removeData(LOCAL_STORAGE_KEY.URL_LIST);
     }
 
     localStorage.setData(
-      localStorageKeys.url_list,
+      LOCAL_STORAGE_KEY.URL_LIST,
       JSON.stringify(
         JSON.parse(urlFromLocalStorage).filter(
-          (urlItem: IUrlItem) => urlItem.id !== url_id
+          (urlItem: UrlItem) => urlItem.id !== url_id
         )
       )
     );
   };
 
   useEffect(() => {
+    /* 컴포넌트 mount 시 local storage에서 가져온 URL 리스트들을 state에 저장  */
     setUrlList(
-      JSON.parse(localStorage.getData(localStorageKeys.url_list) as string) ??
+      JSON.parse(localStorage.getData(LOCAL_STORAGE_KEY.URL_LIST) as string) ??
         []
     );
   }, []);
+
+  useEffect(() => {
+    /* URL이 URL 정규식에 부합하지 않는 경우 */
+    if (!regexValidator(REGEX.URL, urlSearchInput)) {
+      setUrlError({
+        ...urlError,
+        hasError: true,
+        errorMessage: MESSAGES.INVALID_URL,
+      });
+    }
+    /* URL이 URL 최대 길이보다 초과하는 경우 */
+    if (urlSearchInput.length > URL_MAX_LENGTH) {
+      setUrlError({
+        ...urlError,
+        hasError: true,
+        errorMessage: MESSAGES.URL_LENGTH_EXCEEDED,
+      });
+    }
+  }, [urlSearchInput]);
 
   return {
     urlList,

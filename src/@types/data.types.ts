@@ -1,4 +1,4 @@
-export interface IUrlItem {
+export interface UrlItem {
   id: string;
   url: string;
 }
