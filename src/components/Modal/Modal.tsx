@@ -6,5 +6,7 @@ export default function Modal({ children }: Children) {
 
   if (!modalRoot) throw new Error(MESSAGES.NOT_FOUND);
 
-  return <div className="">{children}</div>;
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-30 z-30">{children}</div>
+  );
 }

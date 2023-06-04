@@ -5,6 +5,7 @@ import UrlList from "./pages/UrlList/UrlList";
 import Layout from "./layouts/Layout";
 import { Suspense, lazy } from "react";
 import Loading from "./components/Loading/Loading";
+import UrlListDetail from "./pages/UrlListDetail/UrlListDetail";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/url_list" element={<UrlList />} />
+            <Route path="/url_list/detail/:id" element={<UrlListDetail />} />
           </Routes>
         </Suspense>
       </Layout>

@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react";
 import localStorage from "../utils/localStorage";
 import uuid from "react-uuid";
-import { LOCAL_STORAGE_KEY } from "../constants/dummy";
+import {
+  DEFAULT_URL_VALUE,
+  LOCAL_STORAGE_KEY,
+  URL_MAX_LIMIT,
+} from "../constants/dummy";
 import { UrlItem } from "../@types/data.types";
 import { regexValidator } from "../utils/regexValidator";
 import { REGEX } from "../constants/regex";
 import { MESSAGES } from "../constants/messages";
 import { URL_MAX_LENGTH } from "../constants/dummy";
+import { URL_PREFIX } from "../constants/dummy";
+import { UrlPrefix } from "../@types/data.types";
 
 const useUrl = () => {
   const [urlList, setUrlList] = useState<Array<UrlItem>>([]);
-  const [urlSearchInput, setUrlSearchInput] = useState("");
+  const [selectedUrlPrefix, setSelectedUrlPrefix] = useState(URL_PREFIX[0]);
+  const [urlSearchInput, setUrlSearchInput] = useState(DEFAULT_URL_VALUE);
   const [urlError, setUrlError] = useState({
     hasError: true,
     errorMessage: "",
@@ -46,14 +53,14 @@ const useUrl = () => {
       }
 
       /* URL 데이터가 최대 저장 가능 갯수(5) 초과 방지 */
-      if (parsedUrlFromLocalStorage.length >= URL_MAX_LENGTH) {
-        return alert(MESSAGES.URL_LENGTH_EXCEEDED);
+      if (parsedUrlFromLocalStorage.length >= URL_MAX_LIMIT) {
+        return alert(MESSAGES.URL_MAX_LIMIT_EXCEEDED);
       }
 
       /* 위의 모든 제약 조건들을 통과 했다면 */
       const addedUrlList = parsedUrlFromLocalStorage.concat({
         id: uniqueId,
-        url: urlSearchInput,
+        url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
       });
 
       localStorage.setData(
@@ -61,7 +68,7 @@ const useUrl = () => {
         JSON.stringify(addedUrlList)
       );
       /* url 입력값 초기화 */
-      setUrlSearchInput("");
+      setUrlSearchInput(DEFAULT_URL_VALUE);
       return setUrlList(addedUrlList);
     }
     /*
@@ -73,20 +80,21 @@ const useUrl = () => {
       JSON.stringify([
         {
           id: uniqueId,
-          url: urlSearchInput,
+          url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
         },
       ])
     );
-    /* url 입력값 초기화 */
-    setUrlSearchInput("");
 
-    return setUrlList((prevUrlList: Array<UrlItem>) => [
+    setUrlList((prevUrlList: Array<UrlItem>) => [
       ...prevUrlList,
       {
         id: uniqueId,
-        url: urlSearchInput,
+        url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
       },
     ]);
+
+    /* url 입력값 초기화 */
+    return setUrlSearchInput(DEFAULT_URL_VALUE);
   };
 
   const removeUrlHandler = (url_id: string) => {
@@ -105,6 +113,24 @@ const useUrl = () => {
         )
       )
     );
+  };
+
+  const stopDeleteUrlHandler = (event: React.KeyboardEvent) => {
+    if (
+      urlSearchInput.length <= DEFAULT_URL_VALUE.length &&
+      (event.key === "Backspace" || event.key === "Delete")
+    ) {
+      event.preventDefault();
+    }
+  };
+
+  const selectUrlPefixHandler = (event: any) => {
+    setSelectedUrlPrefix({
+      ...selectedUrlPrefix,
+      ...URL_PREFIX.find(
+        (urlPrefix: UrlPrefix) => String(urlPrefix.id) === event
+      ),
+    });
   };
 
   useEffect(() => {
@@ -132,14 +158,21 @@ const useUrl = () => {
         errorMessage: MESSAGES.URL_LENGTH_EXCEEDED,
       });
     }
+    /* www.가 지워지지 않도록 하는 로직 */
+    if (urlSearchInput.length < DEFAULT_URL_VALUE.length) {
+      setUrlSearchInput(DEFAULT_URL_VALUE);
+    }
   }, [urlSearchInput]);
 
   return {
     urlList,
     urlSearchInput,
     urlSearchInputHandler,
+    selectedUrlPrefix,
+    selectUrlPefixHandler,
     addUrlHandler,
     removeUrlHandler,
+    stopDeleteUrlHandler,
   };
 };
 

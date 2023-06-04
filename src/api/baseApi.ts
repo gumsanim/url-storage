@@ -8,7 +8,7 @@ class BaseApi {
 
   private static axiosConfig() {
     return axios.create({
-      baseURL: "",
+      baseURL: process.env.REACT_APP_BASE_URL,
       timeout: 5000,
       headers: {
         "Content-Type": "application/json",
