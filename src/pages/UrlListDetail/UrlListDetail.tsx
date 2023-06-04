@@ -4,9 +4,12 @@ import urlApi from "../../api/urlApi";
 import { LOCAL_STORAGE_KEY } from "../../constants/dummy";
 import { UrlItem } from "../../@types/data.types";
 import localStorage from "../../utils/localStorage";
+import { useState } from "react";
+import { QUERY_KEY } from "../../constants/query";
+import { useQuery } from "react-query";
+import axios from "axios";
 export default function UrlListDetail() {
   const { id } = useParams();
-
   /* local storage의 값, 매 렌더링 시 할당, 전역변수용 */
   const urlFromLocalStorage = localStorage.getData(
     LOCAL_STORAGE_KEY.URL_LIST
@@ -18,16 +21,49 @@ export default function UrlListDetail() {
     [id, urlFromLocalStorage]
   );
 
+  const {
+    isLoading: IsDetailLoading,
+    error: detailError,
+    data: detailUrl,
+  } = useQuery(
+    QUERY_KEY.GET_URL_DETAIL,
+    () => urlApi.getUrlDetail(urlInfo.url),
+    {
+      enabled: !!urlInfo,
+    }
+  );
+
+  // const {
+  //   isLoading: isHistoryLoading,
+  //   error: historyError,
+  //   data: historyUrl,
+  // } = useQuery(
+  //   QUERY_KEY.GET_DECADE_URL_HISTORY,
+  //   () => {
+  //     urlApi.getDecadeUrlHistory(urlInfo);
+  //   },
+  //   {
+  //     enabled: !!urlInfo,
+  //   }
+  // );
+
   useEffect(() => {
-    (async () => {
+    const fetcher = async () => {
       try {
-        const { data } = await urlApi.getUrlList(urlInfo.url);
+        const { data } = await axios.get(
+          "http://web.archive.org/cdx/search/cdx?url=archive.org"
+        );
         console.log(data);
-      } catch (error) {
+      } catch (error: any) {
         console.log(error);
       }
-    })();
-  }, []);
+    };
+    fetcher();
+  });
 
-  return <div></div>;
+  return (
+    <div>
+      <h1>하이</h1>
+    </div>
+  );
 }

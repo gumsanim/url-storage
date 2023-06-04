@@ -1,16 +1,21 @@
 import BaseApi from "./baseApi";
 
 class UrlApi extends BaseApi {
-  async getUrlList(url: string) {
+  async getUrlDetail(url: string, timestamp?: string) {
     try {
-      const result = await this.axios.get(`?url=${url}`);
-      return result;
-    } catch (error) {
+      return this.axios.get(`?url=${url}`);
+    } catch {
       throw new Error();
     }
   }
 
-  getOneUrl() {}
+  async getDecadeUrlHistory(url: string) {
+    try {
+      return this.axios.get(`/cdx/search/cdx?url=${url}`);
+    } catch {
+      throw new Error();
+    }
+  }
 }
 
 const urlApi = new UrlApi();
