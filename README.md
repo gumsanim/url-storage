@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+#기술스택
+React, Typescript, Tailwind CSS, 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#주요 라이브러리
+React Query, Material Tailwind
 
-## Available Scripts
+#배포 환경
+aws s3 cloud front
 
-In the project directory, you can run:
+#실행 방법
+1. npm install
+2. npm run start
 
-### `npm start`
+#빌드 및 배포 방법
+1. npm run build
+2. npm run deploy
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `npm test`
+#추가 기능 구현
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. URL 중복 저장 방지
+-> 고유한 URL 주소를 저장하기 위함
 
-### `npm run build`
+2.http, https 선택 제공
+-> URL 형식을 준수하여 작성하기 위함, URL 형식에 대해 지식이 부족한 일반인 유저들에게 입력값 특정 부분을 강제함으로써
+올바른 URL 저장 할 수 있도록 지원
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. 정규식을 통한 URL 주소 검증
+-> 위 2의 이유와 같음
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. URL 입력값을 입력 할 때 마다 3의 과정을 거치고 에러메시지 생성 및 저장 버튼 비활성화
+-> 유저들이 올바른 URL을 저장할 수 있도록 가이드 제공
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+5. 저장된 URL이 없을 시 fallback UI (URL이 존재하지 않는다는 메시지를 보여주는 UI) 생성
+-> 유저들에게 현재 URL 리스트 상태에 대한 적절한 정보 제공
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+6. Error Boundary를 통한 에러 핸들링
+-> 전역적으로 에러 캐치 및 핸들링에 용이
