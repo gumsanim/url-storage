@@ -10,8 +10,7 @@ import List from "../../components/List/List";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { UrlItem, UrlPrefix } from "../../@types/data.types";
 import useUrl from "../../hooks/useUrl";
-import { lazy, useState } from "react";
-import Modal from "../../components/Modal/Modal";
+import { lazy } from "react";
 import {
   DEFAULT_URL_VALUE,
   URL_MAX_LENGTH,
@@ -20,6 +19,8 @@ import {
 import useNavigator from "../../hooks/useNavigator";
 import { useLocation } from "react-router-dom";
 import { MESSAGES } from "../../constants/messages";
+
+const Modal = lazy(() => import("../../components/Modal/Modal"));
 
 export default function UrlList() {
   const {
@@ -33,6 +34,7 @@ export default function UrlList() {
     inputKeyDownHandler,
     urlError,
     alert,
+    setAlert,
   } = useUrl();
 
   const navigateHandler = useNavigator();
@@ -52,11 +54,25 @@ export default function UrlList() {
     <div>
       {alert.hasAlert && (
         <Modal>
-          <Card className="modal">{alert.alertMessage}</Card>
+          <Card className="modal">
+            <div className="mb-5">{alert.alertMessage}</div>
+            <Button
+              color="yellow"
+              onClick={() =>
+                setAlert({
+                  ...alert,
+                  hasAlert: false,
+                  alertMessage: "",
+                })
+              }
+            >
+              확인
+            </Button>
+          </Card>
         </Modal>
       )}
-      <p className="text-center mb-20 text-2xl font-bold text-2xl md:text-lg">
-        MAKE YOUR OWN URL LIST
+      <p className="text-center mb-20 font-bold text-2xl md:text-lg">
+        URL 리스트를 만들어보세요.
       </p>
       <div className="flex md:flex-col">
         <div className="mr-2 md:mr-0 md:mb-3">
@@ -65,7 +81,7 @@ export default function UrlList() {
             onChange={selectUrlPefixHandler}
             value={String(selectedUrlPrefix.id)}
           >
-            {URL_PREFIX.map((urlPrefix: any) => (
+            {URL_PREFIX.map((urlPrefix: UrlPrefix) => (
               <Option key={urlPrefix.id} value={String(urlPrefix.id)}>
                 {urlPrefix.prefix}
               </Option>
@@ -122,7 +138,7 @@ export default function UrlList() {
         ) : (
           /* local storage에 저장된 URL이 없는 경우 fallback UI */
           <div className="h-full w-full flex justify-center items-center md:text-sm">
-            Why don't you add some urls to your list?
+            URL 리스트가 존재하지 않습니다.
           </div>
         )}
       </Card>

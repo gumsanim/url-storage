@@ -1,12 +1,14 @@
+import { UrlPrefix, LocalStorageKey } from "../@types/data.types";
+
 const COUNT = 3;
 
-const LOCAL_STORAGE_KEY = {
+const LOCAL_STORAGE_KEY: LocalStorageKey = {
   URL_LIST: "url_list",
 };
 
 const URL_MAX_LENGTH = 50;
 
-const URL_PREFIX = [
+const URL_PREFIX: UrlPrefix[] = [
   {
     id: 1,
     prefix: "http",

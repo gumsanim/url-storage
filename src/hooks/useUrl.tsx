@@ -201,6 +201,7 @@ const useUrl = () => {
     inputKeyDownHandler,
     urlError,
     alert,
+    setAlert,
   };
 };
 

@@ -6,9 +6,9 @@ export interface ListProps extends Children {}
 export interface ListItemProps extends Children, ClassName {
   className: string;
   ripple?: boolean;
-  clickHandler: () => void;
+  clickHandler?: () => void;
 }
 
 export interface ListItemIconProps extends Children {
-  clickHandler: (event: React.MouseEvent<HTMLElement>) => void;
+  clickHandler?: (event: React.MouseEvent<HTMLElement>) => void;
 }

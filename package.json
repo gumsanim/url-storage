@@ -19,13 +19,13 @@
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "react-uuid": "^2.0.0",
-    "styled-components": "^5.3.11",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "deploy": "aws s3 sync ./build s3://jaehochoi-payhere-assignment --profile=jaeho",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -50,7 +50,6 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/react-query": "^1.2.9",
-    "@types/styled-components": "^5.1.26",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "postcss-loader": "^7.3.2",

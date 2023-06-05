@@ -7,3 +7,7 @@ export interface UrlPrefix {
   id: number;
   prefix: string;
 }
+
+export interface LocalStorageKey {
+  [key: string]: string;
+}

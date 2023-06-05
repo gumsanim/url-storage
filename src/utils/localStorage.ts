@@ -1,4 +1,5 @@
 /* localStorage를 관리하는 class 입니다. */
+
 class LocalStorage {
   public readonly localStorage = window.localStorage;
 

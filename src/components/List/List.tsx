@@ -4,7 +4,8 @@ import { ListItemIconProps, ListItemProps } from "./List.types";
 import { ClassNames } from "../../@types/style.types";
 
 const listItemClassNames: ClassNames = {
-  url_list: "py-1 pr-1 pl-4",
+  url_list: "py-1 pr-4 pl-4",
+  url_detail: "py-1 pr-2 pl-2 truncate",
 };
 
 function List({ children }: Children) {
