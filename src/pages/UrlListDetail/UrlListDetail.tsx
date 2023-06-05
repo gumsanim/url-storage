@@ -33,33 +33,7 @@ export default function UrlListDetail() {
     }
   );
 
-  // const {
-  //   isLoading: isHistoryLoading,
-  //   error: historyError,
-  //   data: historyUrl,
-  // } = useQuery(
-  //   QUERY_KEY.GET_DECADE_URL_HISTORY,
-  //   () => {
-  //     urlApi.getDecadeUrlHistory(urlInfo);
-  //   },
-  //   {
-  //     enabled: !!urlInfo,
-  //   }
-  // );
-
-  useEffect(() => {
-    const fetcher = async () => {
-      try {
-        const { data } = await axios.get(
-          "http://web.archive.org/cdx/search/cdx?url=archive.org"
-        );
-        console.log(data);
-      } catch (error: any) {
-        console.log(error);
-      }
-    };
-    fetcher();
-  });
+  console.log(detailUrl);
 
   return (
     <div>

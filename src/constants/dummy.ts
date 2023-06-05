@@ -17,7 +17,7 @@ const URL_PREFIX = [
   },
 ];
 
-const URL_MAX_LIMIT = 5;
+const URL_MAX_LIMIT = 4;
 
 const DEFAULT_URL_VALUE = "www.";
 

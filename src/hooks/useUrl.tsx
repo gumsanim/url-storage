@@ -22,6 +22,10 @@ const useUrl = () => {
     hasError: true,
     errorMessage: "",
   });
+  const [alert, setAlert] = useState({
+    hasAlert: false,
+    alertMessage: "",
+  });
   /* URL 저장 시 고유 string ID 생성 */
   const uniqueId = uuid();
   /*  http:// 혹은 https:// + 유저가 입력한 url 값 */
@@ -48,15 +52,23 @@ const useUrl = () => {
       const parsedUrlFromLocalStorage = JSON.parse(urlFromLocalStorage);
       if (
         parsedUrlFromLocalStorage.findIndex(
-          (urlItem: UrlItem) => urlItem.url === urlSearchInput
+          (urlItem: UrlItem) => urlItem.url === completeUrl
         ) >= 0
       ) {
-        return alert(MESSAGES.DUPLICATE_URL);
+        return setAlert({
+          ...alert,
+          hasAlert: true,
+          alertMessage: MESSAGES.DUPLICATE_URL,
+        });
       }
 
       /* URL 데이터가 최대 저장 가능 갯수(5) 초과 방지 */
       if (parsedUrlFromLocalStorage.length >= URL_MAX_LIMIT) {
-        return alert(MESSAGES.URL_MAX_LIMIT_EXCEEDED);
+        return setAlert({
+          ...alert,
+          hasAlert: true,
+          alertMessage: MESSAGES.URL_MAX_LIMIT_EXCEEDED,
+        });
       }
 
       /* 위의 모든 제약 조건들을 통과 했다면 */
@@ -117,8 +129,9 @@ const useUrl = () => {
     );
   };
 
-  const stopDeleteUrlHandler = (event: React.KeyboardEvent) => {
+  const inputKeyDownHandler = (event: React.KeyboardEvent) => {
     if (
+      /* www. 만 남은 상황에서 backspace 혹은 delete를 눌렀을 때 동작 방지 */
       urlSearchInput.length <= DEFAULT_URL_VALUE.length &&
       (event.key === "Backspace" || event.key === "Delete")
     ) {
@@ -135,15 +148,7 @@ const useUrl = () => {
     });
   };
 
-  useEffect(() => {
-    /* 컴포넌트 mount 시 local storage에서 가져온 URL 리스트들을 state에 저장  */
-    setUrlList(
-      JSON.parse(localStorage.getData(LOCAL_STORAGE_KEY.URL_LIST) as string) ??
-        []
-    );
-  }, []);
-
-  useEffect(() => {
+  const urlInputValidationHandler = () => {
     /* URL이 URL 정규식에 부합하지 않는 경우 */
     if (!regexValidator(REGEX.URL, urlSearchInput)) {
       setUrlError({
@@ -167,7 +172,18 @@ const useUrl = () => {
         errorMessage: MESSAGES.URL_LENGTH_EXCEEDED,
       });
     }
+  };
 
+  useEffect(() => {
+    /* 컴포넌트 mount 시 local storage에서 가져온 URL 리스트들을 state에 저장  */
+    setUrlList(
+      JSON.parse(localStorage.getData(LOCAL_STORAGE_KEY.URL_LIST) as string) ??
+        []
+    );
+  }, []);
+
+  useEffect(() => {
+    urlInputValidationHandler();
     /* www.가 지워지지 않도록 하는 로직 */
     if (urlSearchInput.length < DEFAULT_URL_VALUE.length) {
       setUrlSearchInput(DEFAULT_URL_VALUE);
@@ -182,8 +198,9 @@ const useUrl = () => {
     selectUrlPefixHandler,
     addUrlHandler,
     removeUrlHandler,
-    stopDeleteUrlHandler,
+    inputKeyDownHandler,
     urlError,
+    alert,
   };
 };
 

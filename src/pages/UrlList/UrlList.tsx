@@ -1,15 +1,12 @@
 import {
   Input,
-  List,
-  ListItem,
-  ListItemSuffix,
-  Card,
-  IconButton,
   Button,
   ButtonGroup,
   Select,
   Option,
 } from "@material-tailwind/react";
+import Card from "../../components/Card/Card";
+import List from "../../components/List/List";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { UrlItem, UrlPrefix } from "../../@types/data.types";
 import useUrl from "../../hooks/useUrl";
@@ -33,8 +30,9 @@ export default function UrlList() {
     selectUrlPefixHandler,
     addUrlHandler,
     removeUrlHandler,
-    stopDeleteUrlHandler,
+    inputKeyDownHandler,
     urlError,
+    alert,
   } = useUrl();
 
   const navigateHandler = useNavigator();
@@ -52,17 +50,16 @@ export default function UrlList() {
 
   return (
     <div>
-      {/* {urlError.hasError && (
+      {alert.hasAlert && (
         <Modal>
-          <div>hi</div>
+          <Card className="modal">{alert.alertMessage}</Card>
         </Modal>
-      )} */}
-
-      <p className="text-center mb-20 text-2xl font-bold">
+      )}
+      <p className="text-center mb-20 text-2xl font-bold text-2xl md:text-lg">
         MAKE YOUR OWN URL LIST
       </p>
-      <div className="flex flex-row">
-        <div className="mr-2">
+      <div className="flex md:flex-col">
+        <div className="mr-2 md:mr-0 md:mb-3">
           <Select
             label="Select URL prefix"
             onChange={selectUrlPefixHandler}
@@ -75,22 +72,16 @@ export default function UrlList() {
             ))}
           </Select>
         </div>
-        <div className="mr-2 flex w-96">
+        <div className="flex md:mr-0">
           <Input
-            label={
-              urlSearchInput.length <= DEFAULT_URL_VALUE.length
-                ? "Url을 입력하세요."
-                : urlError.hasError
-                ? urlError.errorMessage
-                : "올바른 형식의 URL입니다."
-            }
+            label={urlInputLabel}
             error={
               urlSearchInput.length > DEFAULT_URL_VALUE.length &&
               urlError.hasError
             }
             value={urlSearchInput}
             onChange={urlSearchInputHandler}
-            onKeyDown={stopDeleteUrlHandler}
+            onKeyDown={inputKeyDownHandler}
           />
           <ButtonGroup className="ml-2">
             <Button
@@ -104,38 +95,34 @@ export default function UrlList() {
           </ButtonGroup>
         </div>
       </div>
-      <Card className="h-[18rem]">
+      <Card className="url_list">
         {urlList.length ? (
           /* ocal storage에 저장된 URL이 있는 경우 fallback UI */
           <List>
             {urlList.map((list: UrlItem) => (
-              <ListItem
+              <List.Item
                 key={list.id}
-                ripple={false}
-                className="py-1 pr-1 pl-4"
-                onClick={() => navigateHandler(`${pathname}/detail/${list.id}`)}
+                className="url_list"
+                clickHandler={() =>
+                  navigateHandler(`${pathname}/detail/${list.id}`)
+                }
               >
                 {list.url}
-                <ListItemSuffix>
-                  <IconButton
-                    variant="text"
-                    color="blue-gray"
-                    onClick={(event: React.MouseEvent<HTMLElement>) => {
-                      removeUrlHandler(list.id);
-                      /* event bubbling 방지 */
-                      event.stopPropagation();
-                    }}
-                  >
-                    <TrashIcon className="h-5 w-5" />
-                  </IconButton>
-                </ListItemSuffix>
-              </ListItem>
+                <List.Item.Icon
+                  clickHandler={(event: React.MouseEvent<HTMLElement>) => {
+                    removeUrlHandler(list.id);
+                    event.stopPropagation();
+                  }}
+                >
+                  <TrashIcon className="h-5 w-5" />
+                </List.Item.Icon>
+              </List.Item>
             ))}
           </List>
         ) : (
           /* local storage에 저장된 URL이 없는 경우 fallback UI */
-          <div className="h-full w-full flex justify-center items-center">
-            Why don't you make your own URL list?
+          <div className="h-full w-full flex justify-center items-center md:text-sm">
+            Why don't you add some urls to your list?
           </div>
         )}
       </Card>

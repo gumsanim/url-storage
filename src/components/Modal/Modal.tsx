@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Children } from "../../@types/global.types";
 import { MESSAGES } from "../../constants/messages";
 
@@ -6,7 +7,13 @@ export default function Modal({ children }: Children) {
 
   if (!modalRoot) throw new Error(MESSAGES.NOT_FOUND);
 
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-30 z-30">{children}</div>
+    <div
+      className="fixed inset-0 bg-black bg-opacity-30 z-30 flex justify-center items-center"
+      id="modal"
+    >
+      {children}
+    </div>
   );
 }
