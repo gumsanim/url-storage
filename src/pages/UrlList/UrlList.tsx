@@ -15,9 +15,14 @@ import { UrlItem, UrlPrefix } from "../../@types/data.types";
 import useUrl from "../../hooks/useUrl";
 import { lazy, useState } from "react";
 import Modal from "../../components/Modal/Modal";
-import { URL_PREFIX } from "../../constants/dummy";
+import {
+  DEFAULT_URL_VALUE,
+  URL_MAX_LENGTH,
+  URL_PREFIX,
+} from "../../constants/dummy";
 import useNavigator from "../../hooks/useNavigator";
 import { useLocation } from "react-router-dom";
+import { MESSAGES } from "../../constants/messages";
 
 export default function UrlList() {
   const {
@@ -29,18 +34,30 @@ export default function UrlList() {
     addUrlHandler,
     removeUrlHandler,
     stopDeleteUrlHandler,
+    urlError,
   } = useUrl();
 
   const navigateHandler = useNavigator();
   const { pathname } = useLocation();
 
+  /* www.만 있을 때 input 에러 x, www. + 입력 글자가 있을 때 url 형식 검사 후 통과 못할 시 에러메시지 */
+  const urlInputLabel =
+    urlSearchInput.length <= DEFAULT_URL_VALUE.length
+      ? MESSAGES.ENTER_URL
+      : urlError.hasError || urlSearchInput.length > URL_MAX_LENGTH
+      ? urlError.errorMessage
+      : MESSAGES.CORRECT_URL;
+
   /* set default prefix to http */
 
   return (
     <div>
-      {/* <Modal>
-        <div>hi</div>
-      </Modal> */}
+      {/* {urlError.hasError && (
+        <Modal>
+          <div>hi</div>
+        </Modal>
+      )} */}
+
       <p className="text-center mb-20 text-2xl font-bold">
         MAKE YOUR OWN URL LIST
       </p>
@@ -60,13 +77,28 @@ export default function UrlList() {
         </div>
         <div className="mr-2 flex w-96">
           <Input
-            label="Enter URL"
+            label={
+              urlSearchInput.length <= DEFAULT_URL_VALUE.length
+                ? "Url을 입력하세요."
+                : urlError.hasError
+                ? urlError.errorMessage
+                : "올바른 형식의 URL입니다."
+            }
+            error={
+              urlSearchInput.length > DEFAULT_URL_VALUE.length &&
+              urlError.hasError
+            }
             value={urlSearchInput}
             onChange={urlSearchInputHandler}
             onKeyDown={stopDeleteUrlHandler}
           />
           <ButtonGroup className="ml-2">
-            <Button onClick={addUrlHandler} ripple={false} variant="outlined">
+            <Button
+              onClick={addUrlHandler}
+              ripple={false}
+              variant="outlined"
+              disabled={urlError.hasError}
+            >
               <span>Add</span>
             </Button>
           </ButtonGroup>

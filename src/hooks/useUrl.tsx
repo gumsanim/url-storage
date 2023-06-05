@@ -24,6 +24,8 @@ const useUrl = () => {
   });
   /* URL 저장 시 고유 string ID 생성 */
   const uniqueId = uuid();
+  /*  http:// 혹은 https:// + 유저가 입력한 url 값 */
+  const completeUrl = `${selectedUrlPrefix.prefix}://${urlSearchInput}`;
 
   const urlSearchInputHandler = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -60,7 +62,7 @@ const useUrl = () => {
       /* 위의 모든 제약 조건들을 통과 했다면 */
       const addedUrlList = parsedUrlFromLocalStorage.concat({
         id: uniqueId,
-        url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
+        url: completeUrl,
       });
 
       localStorage.setData(
@@ -80,7 +82,7 @@ const useUrl = () => {
       JSON.stringify([
         {
           id: uniqueId,
-          url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
+          url: completeUrl,
         },
       ])
     );
@@ -89,7 +91,7 @@ const useUrl = () => {
       ...prevUrlList,
       {
         id: uniqueId,
-        url: `${selectedUrlPrefix.prefix}://${urlSearchInput}`,
+        url: completeUrl,
       },
     ]);
 
@@ -150,6 +152,13 @@ const useUrl = () => {
         errorMessage: MESSAGES.INVALID_URL,
       });
     }
+    if (regexValidator(REGEX.URL, urlSearchInput)) {
+      setUrlError({
+        ...urlError,
+        hasError: false,
+        errorMessage: "",
+      });
+    }
     /* URL이 URL 최대 길이보다 초과하는 경우 */
     if (urlSearchInput.length > URL_MAX_LENGTH) {
       setUrlError({
@@ -158,6 +167,7 @@ const useUrl = () => {
         errorMessage: MESSAGES.URL_LENGTH_EXCEEDED,
       });
     }
+
     /* www.가 지워지지 않도록 하는 로직 */
     if (urlSearchInput.length < DEFAULT_URL_VALUE.length) {
       setUrlSearchInput(DEFAULT_URL_VALUE);
@@ -173,6 +183,7 @@ const useUrl = () => {
     addUrlHandler,
     removeUrlHandler,
     stopDeleteUrlHandler,
+    urlError,
   };
 };
 
