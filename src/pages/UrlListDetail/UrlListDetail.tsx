@@ -11,6 +11,7 @@ import List from '../../components/List/List';
 import windowOpener from '../../utils/windowOpener';
 import { MESSAGES } from '../../constants/messages';
 import Title from '../../components/Title/Title';
+import { Chip } from '@material-tailwind/react';
 
 export default function UrlListDetail() {
   const { id } = useParams();
@@ -50,6 +51,7 @@ export default function UrlListDetail() {
     },
   );
 
+  /* N년간의 URL 주소를 불러오는 query */
   const urlHistory = useQueries(
     yearsInfo.map((year_info: YearInfo) => ({
       queryKey: year_info.desc,
@@ -61,6 +63,8 @@ export default function UrlListDetail() {
     })),
   );
 
+  console.log(urlHistory);
+
   return (
     <div className="flex justify-center items-center flex-col">
       <Title>
@@ -69,16 +73,22 @@ export default function UrlListDetail() {
       <Card className="url_detail">
         <List>
           {urlHistory.map((url_history: any) => (
-            <List.Item
-              className="url_detail"
-              clickHandler={() => {
-                if (url_history.data?.archived_snapshots?.closest?.url) {
-                  windowOpener(url_history.data?.archived_snapshots?.closest?.url);
+            <>
+              <List.Item
+                key={url_history.data?.archived_snapshots?.closest?.timestamp}
+                className="url_detail"
+                clickHandler={() => {
+                  if (url_history.data?.archived_snapshots?.closest?.url) {
+                    windowOpener(url_history.data?.archived_snapshots?.closest?.url);
+                  }
+                }}
+                icon={
+                  <Chip className="ml-2" value={url_history.data?.timestamp} variant="outlined" />
                 }
-              }}
-            >
-              {url_history.data?.archived_snapshots?.closest?.url ?? MESSAGES.NON_EXTANT_URL}
-            </List.Item>
+              >
+                {url_history.data?.archived_snapshots?.closest?.url ?? MESSAGES.NON_EXTANT_URL}
+              </List.Item>
+            </>
           ))}
         </List>
       </Card>

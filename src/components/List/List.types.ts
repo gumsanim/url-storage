@@ -7,6 +7,7 @@ export interface ListItemProps extends Children, ClassName {
   className: string;
   ripple?: boolean;
   clickHandler?: () => void;
+  icon?: React.ReactNode;
 }
 
 export interface ListItemIconProps extends Children {

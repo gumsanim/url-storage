@@ -106,16 +106,19 @@ export default function UrlList() {
                 key={list.id}
                 className="url_list"
                 clickHandler={() => navigateHandler(`${pathname}/detail/${list.id}`)}
+                icon={
+                  <List.Item.Icon
+                    clickHandler={(event: React.MouseEvent<HTMLElement>) => {
+                      removeUrlHandler(list.id);
+                      /* event bubbling 으로 인한 page 전환 방지 */
+                      event.stopPropagation();
+                    }}
+                  >
+                    <TrashIcon className="h-5 w-5" />
+                  </List.Item.Icon>
+                }
               >
                 {list.url}
-                <List.Item.Icon
-                  clickHandler={(event: React.MouseEvent<HTMLElement>) => {
-                    removeUrlHandler(list.id);
-                    event.stopPropagation();
-                  }}
-                >
-                  <TrashIcon className="h-5 w-5" />
-                </List.Item.Icon>
               </List.Item>
             ))}
           </List>
