@@ -1,17 +1,27 @@
-import { Input, Button, ButtonGroup, Select, Option } from '@material-tailwind/react';
-import Card from '../../components/Card/Card';
-import List from '../../components/List/List';
-import { TrashIcon } from '@heroicons/react/24/solid';
-import { UrlItem, UrlPrefix } from '../../@types/data.types';
-import useUrl from '../../hooks/useUrl';
-import { lazy } from 'react';
-import { DEFAULT_URL_VALUE, URL_MAX_LENGTH, URL_PREFIX } from '../../constants/dummy';
-import useNavigator from '../../hooks/useNavigator';
-import { useLocation } from 'react-router-dom';
-import { MESSAGES } from '../../constants/messages';
-import Title from '../../components/Title/Title';
+import {
+  Input,
+  Button,
+  ButtonGroup,
+  Select,
+  Option,
+} from '@material-tailwind/react'
+import Card from '../../components/Card/Card'
+import List from '../../components/List/List'
+import { TrashIcon } from '@heroicons/react/24/solid'
+import { UrlItem, UrlPrefix } from '../../@types/data.types'
+import useUrl from '../../hooks/useUrl'
+import { lazy } from 'react'
+import {
+  DEFAULT_URL_VALUE,
+  URL_MAX_LENGTH,
+  URL_PREFIX,
+} from '../../constants/dummy'
+import useNavigator from '../../hooks/useNavigator'
+import { useLocation } from 'react-router-dom'
+import { MESSAGES, TEXT } from '../../constants/messages'
+import Title from '../../components/Title/Title'
 
-const Modal = lazy(() => import('../../components/Modal/Modal'));
+const Modal = lazy(() => import('../../components/Modal/Modal'))
 
 export default function UrlList() {
   const {
@@ -26,10 +36,10 @@ export default function UrlList() {
     urlError,
     alert,
     setAlert,
-  } = useUrl();
+  } = useUrl()
 
-  const navigateHandler = useNavigator();
-  const { pathname } = useLocation();
+  const navigateHandler = useNavigator()
+  const { pathname } = useLocation()
 
   /* www.만 있을 때 input 에러 x, www. + 입력 글자가 있을 때 url 형식 검사 후 통과 못할 시 에러메시지 */
   const urlInputLabel =
@@ -37,7 +47,7 @@ export default function UrlList() {
       ? MESSAGES.ENTER_URL
       : urlError.hasError || urlSearchInput.length > URL_MAX_LENGTH
       ? urlError.errorMessage
-      : MESSAGES.CORRECT_URL;
+      : MESSAGES.CORRECT_URL
 
   /* set default prefix to http */
 
@@ -57,14 +67,14 @@ export default function UrlList() {
                 })
               }
             >
-              확인
+              {TEXT.OK}
             </Button>
           </Card>
         </Modal>
       )}
-      <Title>URL 리스트를 만들어보세요.</Title>
+      <Title>{MESSAGES.MAKE_URL_LIST}</Title>
       <div className="flex md:flex-col">
-        <div className="mr-2 md:mr-0 md:mb-3">
+        <div className="mr-2 md:mb-3 md:mr-0">
           <Select
             label="http, https 선택"
             onChange={selectUrlPefixHandler}
@@ -80,7 +90,10 @@ export default function UrlList() {
         <div className="flex md:mr-0">
           <Input
             label={urlInputLabel}
-            error={urlSearchInput.length > DEFAULT_URL_VALUE.length && urlError.hasError}
+            error={
+              urlSearchInput.length > DEFAULT_URL_VALUE.length &&
+              urlError.hasError
+            }
             value={urlSearchInput}
             onChange={urlSearchInputHandler}
             onKeyDown={inputKeyDownHandler}
@@ -92,7 +105,7 @@ export default function UrlList() {
               variant="outlined"
               disabled={urlError.hasError}
             >
-              <span>ADD</span>
+              <span>{TEXT.ADD}</span>
             </Button>
           </ButtonGroup>
         </div>
@@ -105,13 +118,15 @@ export default function UrlList() {
               <List.Item
                 key={list.id}
                 className="url_list"
-                clickHandler={() => navigateHandler(`${pathname}/detail/${list.id}`)}
+                clickHandler={() =>
+                  navigateHandler(`${pathname}/detail/${list.id}`)
+                }
                 icon={
                   <List.Item.Icon
                     clickHandler={(event: React.MouseEvent<HTMLElement>) => {
-                      removeUrlHandler(list.id);
+                      removeUrlHandler(list.id)
                       /* event bubbling 으로 인한 page 전환 방지 */
-                      event.stopPropagation();
+                      event.stopPropagation()
                     }}
                   >
                     <TrashIcon className="h-5 w-5" />
@@ -124,11 +139,11 @@ export default function UrlList() {
           </List>
         ) : (
           /* local storage에 저장된 URL이 없는 경우 fallback UI */
-          <div className="h-full w-full flex justify-center items-center md:text-sm">
-            URL 리스트가 존재하지 않습니다.
+          <div className="flex h-full w-full items-center justify-center md:text-sm">
+            {MESSAGES.EMPTY_URL_LIST}
           </div>
         )}
       </Card>
     </div>
-  );
+  )
 }

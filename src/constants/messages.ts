@@ -1,4 +1,4 @@
-import { URL_MAX_LENGTH, URL_MAX_LIMIT } from './dummy';
+import { URL_MAX_LENGTH, URL_MAX_LIMIT } from './dummy'
 
 export const MESSAGES = {
   INVALID_URL: 'URL 형식이 올바르지 않습니다.',
@@ -9,4 +9,11 @@ export const MESSAGES = {
   ENTER_URL: '등록하고 싶은 URL을 입력하세요.',
   CORRECT_URL: '올바른 형식의 URL입니다.',
   NON_EXTANT_URL: 'URL이 존재하지 않습니다.',
-};
+  EMPTY_URL_LIST: 'URL 리스트가 존재하지 않습니다.',
+  MAKE_URL_LIST: 'URL 리스트를 만들어보세요.',
+}
+
+export const TEXT = {
+  OK: '확인',
+  ADD: 'ADD',
+}

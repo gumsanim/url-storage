@@ -1,23 +1,22 @@
-import { useState, useEffect } from 'react';
-import useNavigator from '../../hooks/useNavigator';
-import Layout from '../../layouts/Layout';
+import { useState, useEffect } from 'react'
+import useNavigator from '../../hooks/useNavigator'
 
 export default function Home() {
-  const [count, setCount] = useState(3);
-  const navigateHandler = useNavigator();
+  const [count, setCount] = useState(3)
+  const navigateHandler = useNavigator()
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setCount((prevCount: number) => prevCount - 1);
-    }, 1000);
+      setCount((prevCount: number) => prevCount - 1)
+    }, 1000)
 
-    if (count === 0) navigateHandler(`/url_list`);
+    if (count === 0) navigateHandler(`/url_list`)
 
-    /* setTImeout 클린업*/
+    /* setTImeout 클린업 함수*/
     return () => {
-      clearTimeout(timer);
-    };
-  }, [count]);
+      clearTimeout(timer)
+    }
+  }, [count])
 
   return (
     <div className="text-center">
@@ -25,5 +24,5 @@ export default function Home() {
         <span>{count}</span>초 후에 이동합니다.
       </p>
     </div>
-  );
+  )
 }
