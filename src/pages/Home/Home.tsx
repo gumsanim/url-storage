@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import useNavigator from "../../hooks/useNavigator";
-import Layout from "../../layouts/Layout";
+import { useState, useEffect } from 'react';
+import useNavigator from '../../hooks/useNavigator';
+import Layout from '../../layouts/Layout';
 
 export default function Home() {
   const [count, setCount] = useState(3);

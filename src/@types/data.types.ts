@@ -11,3 +11,9 @@ export interface UrlPrefix {
 export interface LocalStorageKey {
   [key: string]: string;
 }
+
+export interface YearInfo {
+  id: number;
+  desc: string;
+  year: string;
+}

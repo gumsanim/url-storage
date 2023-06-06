@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 class BaseApi {
   public readonly axios;
@@ -11,7 +11,7 @@ class BaseApi {
       baseURL: process.env.REACT_APP_BASE_URL,
       timeout: 5000,
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     });
   }

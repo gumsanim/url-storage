@@ -1,6 +1,6 @@
-import React from "react";
-import { ErrorBoundaryProps } from "./ErrorBoundary.types";
-import Error from "../Error/Error";
+import React from 'react';
+import { ErrorBoundaryProps } from './ErrorBoundary.types';
+import Error from '../Error/Error';
 
 class ErrorBoundary extends React.Component<any, ErrorBoundaryProps> {
   constructor(props: any) {
@@ -26,8 +26,8 @@ class ErrorBoundary extends React.Component<any, ErrorBoundaryProps> {
     if (this.state.hasError) {
       return (
         <Error
-          message={"Error"}
-          buttonTxt={"URL LIST 페이지로 돌아가기"}
+          message={'Error'}
+          buttonTxt={'URL LIST 페이지로 돌아가기'}
           errorHandler={this.resolveError}
         />
       );

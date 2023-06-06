@@ -1,26 +1,17 @@
-import {
-  Input,
-  Button,
-  ButtonGroup,
-  Select,
-  Option,
-} from "@material-tailwind/react";
-import Card from "../../components/Card/Card";
-import List from "../../components/List/List";
-import { TrashIcon } from "@heroicons/react/24/solid";
-import { UrlItem, UrlPrefix } from "../../@types/data.types";
-import useUrl from "../../hooks/useUrl";
-import { lazy } from "react";
-import {
-  DEFAULT_URL_VALUE,
-  URL_MAX_LENGTH,
-  URL_PREFIX,
-} from "../../constants/dummy";
-import useNavigator from "../../hooks/useNavigator";
-import { useLocation } from "react-router-dom";
-import { MESSAGES } from "../../constants/messages";
+import { Input, Button, ButtonGroup, Select, Option } from '@material-tailwind/react';
+import Card from '../../components/Card/Card';
+import List from '../../components/List/List';
+import { TrashIcon } from '@heroicons/react/24/solid';
+import { UrlItem, UrlPrefix } from '../../@types/data.types';
+import useUrl from '../../hooks/useUrl';
+import { lazy } from 'react';
+import { DEFAULT_URL_VALUE, URL_MAX_LENGTH, URL_PREFIX } from '../../constants/dummy';
+import useNavigator from '../../hooks/useNavigator';
+import { useLocation } from 'react-router-dom';
+import { MESSAGES } from '../../constants/messages';
+import Title from '../../components/Title/Title';
 
-const Modal = lazy(() => import("../../components/Modal/Modal"));
+const Modal = lazy(() => import('../../components/Modal/Modal'));
 
 export default function UrlList() {
   const {
@@ -62,7 +53,7 @@ export default function UrlList() {
                 setAlert({
                   ...alert,
                   hasAlert: false,
-                  alertMessage: "",
+                  alertMessage: '',
                 })
               }
             >
@@ -71,13 +62,11 @@ export default function UrlList() {
           </Card>
         </Modal>
       )}
-      <p className="text-center mb-20 font-bold text-2xl md:text-lg">
-        URL 리스트를 만들어보세요.
-      </p>
+      <Title>URL 리스트를 만들어보세요.</Title>
       <div className="flex md:flex-col">
         <div className="mr-2 md:mr-0 md:mb-3">
           <Select
-            label="Select URL prefix"
+            label="http, https 선택"
             onChange={selectUrlPefixHandler}
             value={String(selectedUrlPrefix.id)}
           >
@@ -91,10 +80,7 @@ export default function UrlList() {
         <div className="flex md:mr-0">
           <Input
             label={urlInputLabel}
-            error={
-              urlSearchInput.length > DEFAULT_URL_VALUE.length &&
-              urlError.hasError
-            }
+            error={urlSearchInput.length > DEFAULT_URL_VALUE.length && urlError.hasError}
             value={urlSearchInput}
             onChange={urlSearchInputHandler}
             onKeyDown={inputKeyDownHandler}
@@ -106,7 +92,7 @@ export default function UrlList() {
               variant="outlined"
               disabled={urlError.hasError}
             >
-              <span>Add</span>
+              <span>ADD</span>
             </Button>
           </ButtonGroup>
         </div>
@@ -119,9 +105,7 @@ export default function UrlList() {
               <List.Item
                 key={list.id}
                 className="url_list"
-                clickHandler={() =>
-                  navigateHandler(`${pathname}/detail/${list.id}`)
-                }
+                clickHandler={() => navigateHandler(`${pathname}/detail/${list.id}`)}
               >
                 {list.url}
                 <List.Item.Icon
