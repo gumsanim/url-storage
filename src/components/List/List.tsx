@@ -1,14 +1,14 @@
-import * as Material from '@material-tailwind/react';
-import { Children } from '../../@types/global.types';
-import { ListItemIconProps, ListItemProps } from './List.types';
-import { ClassNames } from '../../@types/style.types';
+import * as Material from '@material-tailwind/react'
+import { Children } from '../../@types/global.types'
+import { ListItemIconProps, ListItemProps } from './List.types'
+import { ClassNames } from '../../@types/style.types'
 
 const listItemClassNames: ClassNames = {
   url_detail: 'flex justify-between',
-};
+}
 
 function List({ children }: Children) {
-  return <Material.List>{children}</Material.List>;
+  return <Material.List>{children}</Material.List>
 }
 
 export function ListItem({
@@ -20,14 +20,14 @@ export function ListItem({
 }: ListItemProps) {
   return (
     <Material.ListItem
-      className={`py-1 pr-2 pl-2 ${listItemClassNames[className]}`}
+      className={`py-1 pl-2 pr-2 ${listItemClassNames[className]}`}
       ripple={ripple}
       onClick={clickHandler}
     >
       <div className="truncate">{children}</div>
       {icon}
     </Material.ListItem>
-  );
+  )
 }
 
 export function ListItemIcon({ children, clickHandler }: ListItemIconProps) {
@@ -37,10 +37,10 @@ export function ListItemIcon({ children, clickHandler }: ListItemIconProps) {
         {children}
       </Material.IconButton>
     </Material.ListItemSuffix>
-  );
+  )
 }
 
-List.Item = ListItem;
-ListItem.Icon = ListItemIcon;
+List.Item = ListItem
+ListItem.Icon = ListItemIcon
 
-export default List;
+export default List

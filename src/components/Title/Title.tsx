@@ -1,5 +1,9 @@
-import { Children } from '../../@types/global.types';
+import { Children } from '../../@types/global.types'
 
 export default function Title({ children }: Children) {
-  return <p className="text-center mb-20 font-bold text-2xl md:text-lg md:px-2">{children}</p>;
+  return (
+    <p className="mb-20 text-center text-2xl font-bold md:px-2 md:text-lg">
+      {children}
+    </p>
+  )
 }

@@ -1,22 +1,22 @@
-import React from 'react';
-import { ErrorBoundaryProps } from './ErrorBoundary.types';
-import Error from '../Error/Error';
+import React from 'react'
+import { ErrorBoundaryProps } from './ErrorBoundary.types'
+import Error from '../Error/Error'
 
 class ErrorBoundary extends React.Component<any, ErrorBoundaryProps> {
   constructor(props: any) {
-    super(props);
-    this.state = { hasError: false, error: null };
-    this.resolveError = this.resolveError.bind(this);
+    super(props)
+    this.state = { hasError: false, error: null }
+    this.resolveError = this.resolveError.bind(this)
   }
 
   static getDerivedStateFromError(error: Error) {
-    return { hasError: true, error };
+    return { hasError: true, error }
   }
 
   componentDidCatch() {}
 
   resolveError() {
-    this.setState({ hasError: false });
+    this.setState({ hasError: false })
   }
 
   render() {
@@ -27,10 +27,10 @@ class ErrorBoundary extends React.Component<any, ErrorBoundaryProps> {
           buttonTxt={'URL LIST 페이지로 돌아가기'}
           errorHandler={this.resolveError}
         />
-      );
+      )
     }
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary
