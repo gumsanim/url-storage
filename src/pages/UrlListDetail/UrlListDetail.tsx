@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { useMemo } from 'react'
+import React, { useMemo } from 'react'
 import urlApi from '../../api/urlApi'
 import { LOCAL_STORAGE_KEY, NUMBER_OF_YEARS } from '../../constants/dummy'
 import { UrlItem, YearInfo } from '../../@types/data.types'
@@ -73,9 +73,8 @@ export default function UrlListDetail() {
       <Card className="url_detail">
         <List>
           {urlHistory.map((url_history: any) => (
-            <>
+            <React.Fragment key={url_history.data?.timestamp}>
               <List.Item
-                key={url_history.data?.archived_snapshots?.closest?.timestamp}
                 className="url_detail"
                 clickHandler={() => {
                   if (url_history.data?.archived_snapshots?.closest?.url) {
@@ -95,7 +94,7 @@ export default function UrlListDetail() {
                 {url_history.data?.archived_snapshots?.closest?.url ??
                   MESSAGES.NON_EXTANT_URL}
               </List.Item>
-            </>
+            </React.Fragment>
           ))}
         </List>
       </Card>
