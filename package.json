@@ -26,6 +26,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "deploy": "aws s3 sync ./build s3://jaehochoi-payhere-assignment --profile=jaeho",
+    "prettier:check": "npx prettier --check ./src/**/*.{js,tsx,jsx,js}",
+    "prettier:fix": "npx prettier --write ./src/**/*.{js,tsx,jsx,js}",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -53,6 +55,7 @@
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24",
     "postcss-loader": "^7.3.2",
+    "prettier": "^2.8.8",
     "tailwindcss": "^3.3.2"
   }
 }

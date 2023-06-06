@@ -1,15 +1,13 @@
-import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home/Home";
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home/Home';
 // import UrlList from "./pages/UrlList/UrlList";
-import Layout from "./layouts/Layout";
-import { Suspense, lazy } from "react";
-import Loading from "./components/Loading/Loading";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
+import Layout from './layouts/Layout';
+import { Suspense, lazy } from 'react';
+import Loading from './components/Loading/Loading';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
-const UrlList = lazy(() => import("../src/pages/UrlList/UrlList"));
-const UrlListDetail = lazy(
-  () => import("../src/pages/UrlListDetail/UrlListDetail")
-);
+const UrlList = lazy(() => import('../src/pages/UrlList/UrlList'));
+const UrlListDetail = lazy(() => import('../src/pages/UrlListDetail/UrlListDetail'));
 
 function App() {
   return (

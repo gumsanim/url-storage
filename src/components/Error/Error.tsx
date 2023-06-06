@@ -1,12 +1,8 @@
-import * as Material from "@material-tailwind/react";
-import { ErrorProps } from "./Error.types";
-import useNavigator from "../../hooks/useNavigator";
+import * as Material from '@material-tailwind/react';
+import { ErrorProps } from './Error.types';
+import useNavigator from '../../hooks/useNavigator';
 
-export default function Error({
-  message,
-  buttonTxt,
-  errorHandler,
-}: ErrorProps) {
+export default function Error({ message, buttonTxt, errorHandler }: ErrorProps) {
   const navigateHandler = useNavigator();
   return (
     <div className="text-center">
@@ -14,7 +10,7 @@ export default function Error({
       <Material.Button
         onClick={() => {
           errorHandler();
-          navigateHandler("/url_list");
+          navigateHandler('/url_list');
         }}
       >
         {buttonTxt}

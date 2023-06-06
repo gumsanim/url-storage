@@ -1,4 +1,4 @@
-import { Children } from "../../@types/global.types";
+import { Children } from '../../@types/global.types';
 
 export interface CardProps extends Children {
   className: string;

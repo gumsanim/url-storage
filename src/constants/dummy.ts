@@ -1,27 +1,25 @@
-import { UrlPrefix, LocalStorageKey } from "../@types/data.types";
+import { UrlPrefix, LocalStorageKey } from '../@types/data.types';
 
 const COUNT = 3;
+const URL_MAX_LIMIT = 4;
+const DEFAULT_URL_VALUE = 'www.';
+const URL_MAX_LENGTH = 50;
+const NUMBER_OF_YEARS = 11;
 
 const LOCAL_STORAGE_KEY: LocalStorageKey = {
-  URL_LIST: "url_list",
+  URL_LIST: 'url_list',
 };
-
-const URL_MAX_LENGTH = 50;
 
 const URL_PREFIX: UrlPrefix[] = [
   {
     id: 1,
-    prefix: "http",
+    prefix: 'http',
   },
   {
     id: 2,
-    prefix: "https",
+    prefix: 'https',
   },
 ];
-
-const URL_MAX_LIMIT = 4;
-
-const DEFAULT_URL_VALUE = "www.";
 
 export {
   COUNT,
@@ -30,4 +28,5 @@ export {
   URL_PREFIX,
   DEFAULT_URL_VALUE,
   URL_MAX_LIMIT,
+  NUMBER_OF_YEARS,
 };
