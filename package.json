@@ -25,7 +25,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "aws s3 sync ./build s3://jaehochoi-payhere-assignment --profile=jaeho",
     "prettier:check": "npx prettier --check ./src/**/*.{js,tsx,jsx,js}",
     "prettier:fix": "npx prettier --write ./src/**/*.{js,tsx,jsx,js}",
     "test": "react-scripts test",
